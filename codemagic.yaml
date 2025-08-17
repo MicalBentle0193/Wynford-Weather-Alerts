@@ -22,13 +22,12 @@ workflows:
       - name: Run tests (optional)
         script: |
           flutter test
+      - name: Build iOS IPA
+        script: |
+          flutter build ipa --export-method ad-hoc
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
       email:
         recipients:
-          - your-email@example.com
-    ios:
-      export_method: ad-hoc
-      code_signing:
-        automatic: true
+          - wynford0193@gmail.com
