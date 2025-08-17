@@ -13,13 +13,15 @@ workflows:
         FIREBASE_DATABASE_URL: https://wynford-weather-alerts-default-rtdb.firebaseio.com/
     scripts:
       - name: Clean project
-        script: flutter clean
+        script: |
+          flutter clean
       - name: Install dependencies
         script: |
           flutter pub get
           cd ios && pod install --repo-update && cd ..
       - name: Run tests (optional)
-        script: flutter test
+        script: |
+          flutter test
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
