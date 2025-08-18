@@ -1,25 +1,19 @@
 platform :ios, '12.0'
-use_frameworks!
-use_modular_headers!
 
-# Use CocoaPods CDN
-source 'https://cdn.cocoapods.org/'
+# Explicitly tell CocoaPods which Xcode project to use
+project 'ios/Runner.xcodeproj'
 
-target 'Runner' do
-  # Flutter pods
-  pod 'Flutter', :path => 'ios/Flutter'
+# CocoaPods analytics mess with automation
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
-  # Plugin pods
-  pod 'cloud_firestore', '~> 12.0'
-  pod 'firebase_core', '~> 2.21.0'
-  pod 'flutter_local_notifications', '~> 19.4.0'
-end
+# Flutter Pod helper
+flutter_application_path = File.expand_path('ios/Flutter')
+eval(File.read(File.join(flutter_application_path, 'podhelper.rb')), binding)
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      # Disable code signing for unsigned builds
-      config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     end
   end
 end
