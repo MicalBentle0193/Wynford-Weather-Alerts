@@ -13,7 +13,9 @@ workflows:
       - name: Install Flutter dependencies
         script: flutter pub get
       - name: Install iOS pods
-        script: pod install --repo-update
+        script: |
+          cd $CM_BUILD_DIR
+          pod install --repo-update
       - name: Build iOS IPA (unsigned)
         script: flutter build ipa --release --no-codesign
     artifacts:
