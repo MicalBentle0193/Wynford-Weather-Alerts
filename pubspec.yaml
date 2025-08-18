@@ -1,26 +1,35 @@
 name: wynford_weather_mission
-description: A secure weather alert app with SMS login, admin/public roles, and real-time warnings.
+description: A secure, real-time weather alert app for Kansas residents.
+publish_to: "none" # This is a private project
 
-publish_to: 'none' # Not publishing to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.13.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^3.24.0
-  firebase_auth: ^5.12.0
-  cloud_firestore: ^4.8.5
-  flutter_local_notifications: ^14.2.1
-  provider: ^6.1.6
-  cupertino_icons: ^1.0.5
+
+  # State management
+  provider: ^6.1.5
+
+  # Firebase
+  firebase_core: ^4.0.0
+  firebase_auth: ^6.0.1
+  cloud_firestore: ^6.0.0
+
+  # Notifications
+  flutter_local_notifications: ^19.4.0
+
+  # UI
+  cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.1
 
 flutter:
   uses-material-design: true
