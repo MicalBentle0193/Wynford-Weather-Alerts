@@ -15,16 +15,23 @@ workflows:
       - name: Clean project
         script: |
           flutter clean
-      - name: Install dependencies
+      - name: Force compatible dependencies
         script: |
-          flutter pub get
-          cd ios && pod install --repo-update && cd ..
-      - name: Run tests (optional)
+          echo "dependency_overrides:" >> pubspec.yaml
+          echo "  flutter_local_notifications: ^19.4.0" >> pubspec.yaml
+          echo "  provider: ^6.1.5" >> pubspec.yaml
+          echo "  firebase_core: ^4.0.0" >> pubspec.yaml
+          echo "  firebase_auth: ^6.0.1" >> pubspec.yaml
+          echo "  cloud_firestore: ^6.0.0" >> pubspec.yaml
+      - name: Install Flutter dependencies
+        script: flutter pub get
+      - name: Install CocoaPods dependencies
         script: |
-          flutter test
-      - name: Build iOS IPA
-        script: |
-          flutter build ipa --export-method ad-hoc
+          cd ios
+          pod install --repo-update
+          cd ..
+      - name: Run Flutter tests
+        script: flutter test
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
