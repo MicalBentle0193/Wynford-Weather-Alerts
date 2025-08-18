@@ -6,9 +6,9 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-      cache:
-        flutter: true
-        cocoapods: true
+    cache:
+      flutter: true
+      cocoapods: true
     scripts:
       - name: Install dependencies
         script: |
