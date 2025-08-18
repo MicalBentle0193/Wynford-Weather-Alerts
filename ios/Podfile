@@ -1,34 +1,27 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, '15.0'
 
-# CocoaPods analytics sends network stats. Can be disabled by setting this to false.
+# CocoaPods analytics sends network stats. Disable if you want.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+# Include the Flutter Pod helper
+require_relative '../Flutter/ephemeral/.flutter-plugins-dependencies'
+
+# Comment the next line if using frameworks is not needed
 use_frameworks!
-use_modular_headers!
 
-# Ignore all warnings from all pods
-inhibit_all_warnings!
-
+# Pods for Runner
 target 'Runner' do
-  # Flutter Pod helper
+  # Install all Flutter pods
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-
-  # Pods for Firebase
-  pod 'Firebase/Core'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Firestore'
-  
-  # Pod for local notifications
-  pod 'flutter_local_notifications', :path => '.symlinks/plugins/flutter_local_notifications/ios'
-
-  # Enable these if you need testing targets
-  target 'RunnerTests' do
-    inherit! :search_paths
-  end
 end
 
-# Post-install script to fix integration issues
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
