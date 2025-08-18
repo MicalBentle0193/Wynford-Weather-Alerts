@@ -1,20 +1,31 @@
-platform :ios, '15.0'
+# Uncomment this line to define a global platform for your project
+platform :ios, '12.0'
+
+# Use CocoaPods CDN instead of the master repo to avoid outdated specs issues
+source 'https://cdn.cocoapods.org/'
+
+# Prevent warnings from interfering with pod install
+install! 'cocoapods', :warn_for_unused_master_specs_repo => false
 
 use_frameworks!
 use_modular_headers!
 
 target 'Runner' do
-  # Add any plugins manually here if needed
+  # Flutter Pod helper
+  flutter_application_path = '../'
+  eval(File.read(File.join(flutter_application_path, '.flutter-plugins-dependencies')), binding)
+
+  # Pods for Flutter plugins
   pod 'cloud_firestore', '~> 12.0'
-  pod 'firebase_auth', '~> 12.0'
-  pod 'firebase_core', '~> 12.0'
+  pod 'firebase_core', '~> 2.21.0'
   pod 'flutter_local_notifications', '~> 19.4.0'
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      # Disable code signing
+      config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
     end
   end
 end
