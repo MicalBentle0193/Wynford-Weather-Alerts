@@ -1,17 +1,19 @@
+# Uncomment this line to define a global platform for your project
 platform :ios, '15.0'
 
+# CocoaPods settings for Flutter
 use_frameworks!
+use_modular_headers!
 
 target 'Runner' do
-  pod 'Firebase/Core', '12.0.0'
-  pod 'Firebase/Auth', '12.0.0'
-  pod 'Firebase/Firestore', '12.0.0'
-  pod 'flutter_local_notifications', '~> 19.4.0'
+  # Dynamically generate pod dependencies for all Flutter plugins
+  flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
+      # Disable bitcode for Flutter plugins
       config.build_settings['ENABLE_BITCODE'] = 'NO'
     end
   end
