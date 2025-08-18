@@ -1,23 +1,26 @@
 workflows:
   ios-workflow:
-    name: iOS Build Workflow
+    name: Wynford Weather iOS Build
     max_build_duration: 60
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
+      vars:
+        FIREBASE_API_KEY: AIzaSyDe-czr6ruXoydTdTARIFBQkpmIdfPkT5g
+        FIREBASE_PROJECT_ID: wynford-weather-alerts
+        FIREBASE_APP_ID: 1:337470919030:ios:e341149f19060353f5aa57
+        FIREBASE_DATABASE_URL: https://wynford-weather-alerts-default-rtdb.firebaseio.com/
     scripts:
+      - name: Clean project
+        script: flutter clean
       - name: Install dependencies
         script: |
           flutter pub get
-          cd ios && pod install && cd ..
+          cd ios && pod install --repo-update && cd ..
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
       email:
         recipients:
           - your-email@example.com
-    ios:
-      export_method: ad-hoc
-      code_signing:
-        automatic: true
