@@ -1,23 +1,34 @@
-platform :ios, '11.0'
+# Podfile for Wynford Weather Mission
 
+platform :ios, '13.0'
+
+# CocoaPods repo update
+install! 'cocoapods', :repo_update => true
+
+# Use frameworks instead of static libraries
 use_frameworks!
-use_modular_headers!
 
 target 'Runner' do
-  flutter_application_path = '../..'
+  # Pods for Flutter
+  pod 'FirebaseCore', '~> 12.0'
+  pod 'FirebaseFirestore', '~> 12.0'
+  pod 'FirebaseAuth', '~> 12.0'
+  pod 'FirebaseMessaging', '~> 12.0'
+  
+  # Any other plugins you use can be added here
+  # pod 'SomeOtherPod', '~> version'
 
-  # Instead of loading podhelper.rb, directly include Flutter framework
-  pod 'Flutter', :path => File.join(flutter_application_path, '.ios', 'Flutter', 'engine')
+  # Flutter engine
+  pod 'Flutter', :path => 'ios/.ios/Flutter/engine'
 
-  # Example pods (Firebase, etc.)
-  pod 'Firebase/Core'
-  pod 'Firebase/Messaging'
-
-  # Add any other plugins manually if needed
-end
-
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    flutter_additional_ios_build_settings(target)
+  # Flutter-specific flags
+  pre_install do |installer|
+    installer.pod_targets.each do |pod|
+      if pod.name.eql?('FirebaseCore') || pod.name.start_with?('Firebase')
+        pod.build_configurations.each do |config|
+          config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+        end
+      end
+    end
   end
 end
