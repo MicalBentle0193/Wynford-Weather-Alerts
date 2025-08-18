@@ -1,22 +1,19 @@
-# Podfile for Wynford Weather Mission
 platform :ios, '13.0'
 
 use_frameworks!
+use_modular_headers!
 
 target 'Runner' do
-  # Flutter engine
-  pod 'Flutter', :path => 'ios/.ios/Flutter/engine'
+  # Flutter Pod
+  flutter_application_path = '../'
+  load File.join(flutter_application_path, '.flutter-plugins-dependencies')
 
-  # Firebase pods (adjust versions if needed)
-  pod 'FirebaseCore', '~> 12.0'
-  pod 'FirebaseFirestore', '~> 12.0'
-  pod 'FirebaseAuth', '~> 12.0'
-  pod 'FirebaseMessaging', '~> 12.0'
+  # Firebase pods
+  pod 'FirebaseCore'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
+  pod 'FirebaseMessaging'
 
-  # Other pods can go here
-  # pod 'SomeOtherPod', '~> version'
-
-  # Fix simulator arm64 issue
   post_install do |installer|
     installer.pods_project.build_configurations.each do |config|
       config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
