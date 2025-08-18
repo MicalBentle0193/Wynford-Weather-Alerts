@@ -1,40 +1,27 @@
 workflows:
-  android-workflow:
-    name: Android Build
-    max_build_duration: 60
-    environment:
-      flutter: stable
-      vars:
-        ANDROID_BUILD_TOOLS_VERSION: "33.0.0"
-        ANDROID_TARGET_SDK: "33"
-        ANDROID_MIN_SDK: "21"
-    scripts:
-      - name: Install Flutter dependencies
-        script: flutter pub get
-      - name: Build APK
-        script: flutter build apk --release
-    artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk
-
-  ios-workflow:
-    name: iOS Build
-    max_build_duration: 60
+  flutter-workflow:
+    name: Flutter CI/CD
+    max_build_duration: 120
     environment:
       flutter: stable
       xcode: latest
-      vars:
-        IOS_DEPLOYMENT_TARGET: "15.0"
+      cocoapods: default
+      cache:
+        flutter: true
+        cocoapods: true
     scripts:
-      - name: Install Flutter dependencies
-        script: flutter pub get
-      - name: Generate Podfile (if missing)
+      - name: Install dependencies
         script: |
-          if [ ! -f ios/Podfile ]; then
-            flutter build ios
-          fi
-      - name: Install CocoaPods
-        script: pod install --project-directory=ios
-      - name: Build IPA
-        script: flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
+          flutter pub get
+      - name: iOS build
+        script: |
+          cd ios
+          pod install --repo-update
+          cd ..
+          flutter build ipa --release --no-codesign
+      - name: Android build
+        script: |
+          flutter build apk --release
     artifacts:
       - build/ios/ipa/*.ipa
+      - build/app/outputs/flutter-apk/app-release.apk
