@@ -4,7 +4,7 @@ workflows:
     max_build_duration: 120
     environment:
       flutter: stable
-      xcode: latest
+      xcode: latest  # only needed for iOS
     scripts:
       - name: Install dependencies
         script: flutter pub get
@@ -19,9 +19,3 @@ workflows:
     artifacts:
       - build/ios/ipa/*.ipa
       - build/app/outputs/flutter-apk/app-release.apk
-    cache:
-      paths:
-        - ~/.pub-cache
-        - ios/Pods
-        - ios/.symlinks
-        - ios/Flutter/Flutter.framework
