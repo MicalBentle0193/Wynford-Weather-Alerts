@@ -5,10 +5,10 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-      cache:
-        paths:
-          - .pub-cache
-          - ios/Pods
+    cache:
+      cache_paths:
+        - $FLUTTER_ROOT/.pub-cache
+        - ios/Pods
     scripts:
       - name: Install Flutter dependencies
         script: flutter pub get
