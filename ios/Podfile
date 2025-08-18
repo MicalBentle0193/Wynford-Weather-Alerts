@@ -1,7 +1,5 @@
-# Uncomment this line to define a global platform for your project
 platform :ios, '15.0'
 
-# CocoaPods analytics sends network stats. Disable if you want.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 project 'Runner', {
@@ -10,20 +8,23 @@ project 'Runner', {
   'Release' => :release,
 }
 
-# Include the Flutter Pod helper
-require_relative '../Flutter/ephemeral/.flutter-plugins-dependencies'
-
-# Comment the next line if using frameworks is not needed
 use_frameworks!
 
-# Pods for Runner
 target 'Runner' do
-  # Install all Flutter pods
-  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  # Pods for Flutter plugins
+  pod 'Firebase/Core', '12.0.0'
+  pod 'Firebase/Auth', '12.0.0'
+  pod 'Firebase/Firestore', '12.0.0'
+  pod 'flutter_local_notifications', :path => '../.symlinks/plugins/flutter_local_notifications/ios'
+
+  # Add any other plugin pods here manually
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
-    flutter_additional_ios_build_settings(target)
+    # Required by Flutter to add build settings
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+    end
   end
 end
