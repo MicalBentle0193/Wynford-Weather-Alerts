@@ -1,36 +1,23 @@
-platform :ios, '13.0'
+platform :ios, '11.0'
 
-require 'json'
+use_frameworks!
+use_modular_headers!
 
 target 'Runner' do
-  use_frameworks!
-  use_modular_headers!
+  flutter_application_path = '../..'
 
-  # Flutter integration manually
-  flutter_root = File.expand_path('../..', __dir__)
-  flutter_framework_dir = File.join(flutter_root, 'build/ios/Release-iphoneos')
+  # Instead of loading podhelper.rb, directly include Flutter framework
+  pod 'Flutter', :path => File.join(flutter_application_path, '.ios', 'Flutter', 'engine')
 
-  pod 'Flutter', :path => File.join(flutter_root, 'bin/cache/artifacts/engine/ios')
-
-  # Example Firebase/notification pods (adjust based on pubspec.yaml)
+  # Example pods (Firebase, etc.)
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
-  pod 'Firebase/Auth'
 
-  # Any other pods you need go here:
-  # pod 'GoogleMaps'
-  # pod 'Alamofire', '~> 5.0'
-
-  target 'RunnerTests' do
-    inherit! :search_paths
-  end
+  # Add any other plugins manually if needed
 end
 
-# Post install hook
 post_install do |installer|
   installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
-    end
+    flutter_additional_ios_build_settings(target)
   end
 end
