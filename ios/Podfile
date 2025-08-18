@@ -1,28 +1,16 @@
 platform :ios, '15.0'
 
-ENV['COCOAPODS_DISABLE_STATS'] = 'true'
-
-project 'Runner', {
-  'Debug' => :debug,
-  'Profile' => :release,
-  'Release' => :release,
-}
-
 use_frameworks!
 
 target 'Runner' do
-  # Pods for Flutter plugins
   pod 'Firebase/Core', '12.0.0'
   pod 'Firebase/Auth', '12.0.0'
   pod 'Firebase/Firestore', '12.0.0'
-  pod 'flutter_local_notifications', :path => '../.symlinks/plugins/flutter_local_notifications/ios'
-
-  # Add any other plugin pods here manually
+  pod 'flutter_local_notifications', '~> 19.4.0'
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
-    # Required by Flutter to add build settings
     target.build_configurations.each do |config|
       config.build_settings['ENABLE_BITCODE'] = 'NO'
     end
