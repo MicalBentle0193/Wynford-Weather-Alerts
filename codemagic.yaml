@@ -1,21 +1,20 @@
 workflows:
   ios-workflow:
-    name: iOS Workflow
-    max_build_duration: 60
+    name: iOS Build
     environment:
       flutter: stable
       xcode: latest
+      cocoapods: default
+      cache:
+        paths:
+          - .pub-cache
+          - ios/Pods
     scripts:
-      - name: Install dependencies
+      - name: Install Flutter dependencies
         script: flutter pub get
-      - name: iOS pod install
-        script: |
-          cd ios
-          pod install --repo-update
-          cd ..
+      - name: Install iOS pods
+        script: pod install --repo-update
       - name: Build iOS IPA (unsigned)
         script: flutter build ipa --release --no-codesign
-    publishing:
-      email:
-        recipients:
-          - you@example.com
+    artifacts:
+      - build/ios/ipa/*.ipa
