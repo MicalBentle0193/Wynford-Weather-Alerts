@@ -5,19 +5,17 @@ workflows:
     environment:
       flutter: stable
       xcode: latest
-      cocoaPods: default
     scripts:
       - name: Install dependencies
-        script: |
-          flutter pub get
+        script: flutter pub get
       - name: iOS pod install
         script: |
           cd ios
           pod install --repo-update
           cd ..
       - name: Build iOS IPA (unsigned)
-        script: |
-          flutter build ipa --release --no-codesign
+        script: flutter build ipa --release --no-codesign
     publishing:
-      artifacts:
-        - build/ios/ipa/*.ipa
+      email:
+        recipients:
+          - you@example.com
