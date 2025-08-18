@@ -1,20 +1,41 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, '15.0'
 
-# CocoaPods settings for Flutter
-use_frameworks!
+# CocoaPods analytics sends network stats. You can disable it.
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+# Prevent all pods from linking as frameworks
+use_frameworks! :linkage => :static
 use_modular_headers!
 
+# Install all Flutter pods
+def flutter_root
+  generated_xcode_build_settings_path = File.expand_path("../Flutter/Generated.xcconfig", __FILE__)
+  unless File.exist?(generated_xcode_build_settings_path)
+    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first."
+  end
+  File.dirname(File.dirname(`which flutter`.strip))
+end
+
+require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
+
+flutter_ios_podfile_setup
+
 target 'Runner' do
-  # Dynamically generate pod dependencies for all Flutter plugins
-  flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
+  use_frameworks!
+  use_modular_headers!
+
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      # Disable bitcode for Flutter plugins
-      config.build_settings['ENABLE_BITCODE'] = 'NO'
-    end
+    flutter_additional_ios_build_settings(target)
   end
 end
