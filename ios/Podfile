@@ -4,10 +4,6 @@ use_frameworks!
 use_modular_headers!
 
 target 'Runner' do
-  # Flutter Pod
-  flutter_application_path = '../'
-  load File.join(flutter_application_path, '.flutter-plugins-dependencies')
-
   # Firebase pods
   pod 'FirebaseCore'
   pod 'FirebaseAuth'
